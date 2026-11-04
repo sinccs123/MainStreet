@@ -1,0 +1,34 @@
+---
+import '../styles/global.css';
+import Downloader from '../components/Downloader.jsx';
+---
+
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Nuestra Herramienta Favorita</title>
+  </head>
+  <body class="min-h-screen bg-zinc-950 text-zinc-100 p-6">
+    <main class="mx-auto flex min-h-[calc(100vh-3rem)] w-full max-w-xl flex-col items-center justify-center gap-8">
+      <header class="order-1 flex w-full items-center justify-center gap-4 text-left">
+        <img
+          class="h-16 w-16 shrink-0 object-contain sm:h-20 sm:w-20"
+          src="https://res.cloudinary.com/dwe3wlivo/image/upload/v1793752088/Logotipo_vial_con_descarga_u9pe7r.png"
+          alt="Logo de MainStreet Downloader"
+        />
+        <div>
+          <h1 class="text-xl font-black uppercase tracking-tight sm:text-3xl">
+            <span class="text-violet-500">MainStreet</span> Downloader
+          </h1>
+          <p class="mt-1 text-xs uppercase tracking-[0.2em] text-zinc-500 sm:mt-2 sm:tracking-[0.3em]">
+            Nuestra herramienta favorita
+          </p>
+        </div>
+      </header>
+      <div class="order-2 w-full">
+        <Downloader client:load />
+      </div>
+    </main>
+  </body>
+</html>
