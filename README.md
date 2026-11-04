@@ -13,14 +13,20 @@ npm run dev
 
 Abre http://localhost:4321. Para compilar y revisar la versión de producción, ejecuta `npm run build` y luego `npm run preview`.
 
-## Abrir sin iniciar un servidor
+## Compartirla desde tu PC (sin Vercel)
 
-Abre `index.html` con el navegador. El archivo carga la aplicación publicada en https://mainstreet-gold.vercel.app/ dentro de la página, así que requiere conexión a internet; no es una copia que funcione sin conexión.
+YouTube bloquea con frecuencia las IPs de servidores en la nube (Vercel incluido), por eso la app se ejecuta en tu PC y se publica con un túnel de Cloudflare:
+
+1. Haz doble clic en `iniciar-publico.bat`. Instala `cloudflared` si falta, compila y arranca el servidor.
+2. Copia la URL `https://...trycloudflare.com` que aparece y compártela. La URL cambia cada vez que se inicia.
+3. La PC debe permanecer encendida y con la ventana abierta mientras otros la usen.
+
+Quien use la URL puede elegir "Usar sesión de" un navegador: eso usa las cookies de tu PC. Déjalo en "Ninguno" salvo que lo necesites y uses una cuenta que no te importe exponer.
 
 ## Compatibilidad y límites
 
 - La descarga se procesa en el servidor con `yt-dlp` y `ffmpeg`.
 - La vista previa se incrusta desde YouTube, Instagram, TikTok o Facebook cuando el enlace y la configuración de privacidad de la plataforma lo permiten.
 - Los enlaces privados requieren una sesión con permiso para acceder al contenido. En Vercel no se puede usar el navegador ni las cookies locales del visitante; YouTube también puede rechazar solicitudes desde servidores.
-- El proyecto usa el adaptador de Vercel para renderizar la página y desplegar sus rutas de servidor.
-- Las APIs usan binarios de `yt-dlp` y `ffmpeg` instalados para la plataforma de despliegue. Vercel no puede leer las cookies del navegador local del visitante; el acceso autenticado depende de cookies disponibles en el servidor.
+- El proyecto usa el adaptador de Node (`@astrojs/node`, modo standalone); el servidor compilado se inicia con `node dist/server/entry.mjs`.
+- Las APIs usan binarios de `yt-dlp` y `ffmpeg` instalados en la máquina que ejecuta el servidor. El acceso autenticado depende de las cookies de esa máquina, no de las del visitante.
