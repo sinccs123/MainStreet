@@ -1,6 +1,6 @@
 # MainStreet
 
-Aplicación Astro para previsualizar enlaces compatibles y descargar contenido en MP4 o MP3. El botón de búsqueda reintenta detectar la duración; el recorte aparece al ingresar un enlace y permite indicar inicio y fin, también manualmente cuando no se detecta la duración.
+Aplicación Astro para previsualizar enlaces compatibles y descargar contenido en MP4 o MP3. El botón de búsqueda reintenta detectar la duración; al activar el interruptor de recorte se puede indicar el inicio y el fin, también manualmente cuando no se detecta la duración. Con el interruptor apagado se descarga el video completo.
 
 ## Ejecutar localmente
 

@@ -65,6 +65,7 @@ export default function Downloader() {
   const [end, setEnd] = useState(0);
   const [manualStart, setManualStart] = useState('');
   const [manualEnd, setManualEnd] = useState('');
+  const [trimEnabled, setTrimEnabled] = useState(false);
   const preview = getPreview(url);
 
   async function searchVideo() {
@@ -138,13 +139,15 @@ export default function Downloader() {
     try {
       const hasManualStart = manualStart !== '';
       const hasManualEnd = manualEnd !== '';
-      if (duration === null && hasManualStart !== hasManualEnd) {
+      if (trimEnabled && duration === null && (!hasManualStart || !hasManualEnd)) {
         throw new Error('Indicá tanto el inicio como el fin del recorte.');
       }
 
-      const startTime = duration === null
+      const startTime = !trimEnabled
+        ? null
+        : duration === null
         ? (hasManualStart ? Number(manualStart) : null)
-        : (start > 0 || end < duration ? start : null);
+        : start;
       const endTime = startTime === null
         ? null
         : (duration === null ? Number(manualEnd) : end);
@@ -247,7 +250,29 @@ export default function Downloader() {
       )}
 
       {url.trim() && <div className="space-y-3 rounded-lg border border-white/10 p-4">
-        <p className="text-xs font-semibold uppercase tracking-widest text-zinc-400">Fragmento a descargar (opcional)</p>
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-xs font-semibold uppercase tracking-widest text-zinc-400">Fragmento a descargar (opcional)</p>
+          <button
+            type="button"
+            role="switch"
+            aria-checked={trimEnabled}
+            aria-label="Recorte de video"
+            onClick={() => setTrimEnabled((enabled) => !enabled)}
+            className={`relative inline-flex h-6 w-11 shrink-0 items-center rounded-full transition-colors ${
+              trimEnabled ? 'bg-violet-600' : 'bg-zinc-700'
+            }`}
+          >
+            <span className="sr-only">{trimEnabled ? 'Recorte activado' : 'Recorte desactivado'}</span>
+            <span
+              aria-hidden="true"
+              className={`inline-block h-4 w-4 rounded-full bg-white transition-transform ${
+                trimEnabled ? 'translate-x-6' : 'translate-x-1'
+              }`}
+            />
+          </button>
+        </div>
+        {trimEnabled ? (
+          <>
         {duration !== null ? (
           <>
             <label htmlFor="start-time" className="block text-xs text-zinc-400">
@@ -313,7 +338,10 @@ export default function Downloader() {
             </div>
           </>
         )}
-        <p className="text-xs text-zinc-500">Deja el fragmento completo para descargar el video entero.</p>
+          </>
+        ) : (
+          <p className="text-xs text-zinc-500">Apagado: se descargará el video completo.</p>
+        )}
       </div>}
 
       <div className="space-y-2">
