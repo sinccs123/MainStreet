@@ -1,6 +1,6 @@
 import type { APIRoute } from 'astro';
 import { spawnYtDlp } from '@involvex/yt-dlp';
-import { BROWSERS, parseMediaUrl } from '../../lib/media';
+import { BROWSERS, getAccessHint, parseMediaUrl } from '../../lib/media';
 
 export const prerender = false;
 
@@ -34,7 +34,8 @@ export const GET: APIRoute = async ({ request }) => {
   const result = await getDuration(args);
   if (result.code !== 0) {
     const detail = result.err.split('\n').filter(Boolean).pop() ?? '';
-    return json({ error: `No se pudo detectar la duración. ${detail}`.trim() }, 502);
+    const hint = getAccessHint(result.err);
+    return json({ error: `No se pudo detectar la duración.${hint} ${detail}`.trim() }, 502);
   }
 
   const duration = Number(result.out.trim().split(/\r?\n/).pop());

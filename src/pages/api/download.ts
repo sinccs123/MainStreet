@@ -6,7 +6,7 @@ import path from 'node:path';
 import { Readable } from 'node:stream';
 import ffmpegPath from 'ffmpeg-static';
 import { spawnYtDlp } from '@involvex/yt-dlp';
-import { BROWSERS, parseMediaUrl } from '../../lib/media';
+import { BROWSERS, getAccessHint, parseMediaUrl } from '../../lib/media';
 
 export const prerender = false;
 
@@ -90,9 +90,7 @@ export const POST: APIRoute = async ({ request }) => {
 
   if (code !== 0 || !file) {
     await rm(dir, { recursive: true, force: true });
-    const hint = /login|private|cookies|authentication|sign in/i.test(err)
-      ? ' Este contenido requiere sesión: elegí tu navegador (donde tengas la sesión iniciada) en "Usar sesión de".'
-      : '';
+    const hint = getAccessHint(err);
     const detail = err.split('\n').filter(Boolean).pop() ?? '';
     return json(`No se pudo descargar.${hint} ${detail}`.trim(), 502);
   }

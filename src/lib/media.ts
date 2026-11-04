@@ -11,3 +11,17 @@ export function parseMediaUrl(value: unknown): URL | null {
     return null;
   }
 }
+
+export function getAccessHint(error: string): string {
+  if (/sign in to confirm.*not a bot|confirm you.re not a bot|captcha|unusual traffic/i.test(error)) {
+    return process.env.VERCEL === '1'
+      ? ' YouTube bloqueó la solicitud desde Vercel. Ese servidor no puede usar las cookies del navegador de tu computadora.'
+      : ' YouTube pide una sesión válida. Ejecuta la aplicación localmente y selecciona el navegador donde tengas permiso para ver el video.';
+  }
+
+  if (/login|private|cookies|authentication|sign in/i.test(error)) {
+    return ' El contenido requiere una sesión válida con permiso para acceder.';
+  }
+
+  return '';
+}

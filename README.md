@@ -17,6 +17,6 @@ Abre http://localhost:4321. Para compilar y revisar la versión de producción, 
 
 - La descarga se procesa en el servidor con `yt-dlp` y `ffmpeg`.
 - La vista previa se incrusta desde YouTube, Instagram, TikTok o Facebook cuando el enlace y la configuración de privacidad de la plataforma lo permiten.
-- Los enlaces privados requieren una sesión con permiso para acceder al contenido. El uso de cookies del navegador depende del navegador y del entorno donde se ejecute el servidor.
+- Los enlaces privados requieren una sesión con permiso para acceder al contenido. En Vercel no se puede usar el navegador ni las cookies locales del visitante; YouTube también puede rechazar solicitudes desde servidores.
 - El proyecto usa el adaptador de Vercel para renderizar la página y desplegar sus rutas de servidor.
 - Las APIs usan binarios de `yt-dlp` y `ffmpeg` instalados para la plataforma de despliegue. Vercel no puede leer las cookies del navegador local del visitante; el acceso autenticado depende de cookies disponibles en el servidor.

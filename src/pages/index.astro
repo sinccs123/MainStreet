@@ -1,6 +1,8 @@
 ---
 import '../styles/global.css';
 import Downloader from '../components/Downloader.jsx';
+
+const browserSessionAvailable = process.env.VERCEL !== '1';
 ---
 
 <html lang="es">
@@ -27,7 +29,7 @@ import Downloader from '../components/Downloader.jsx';
         </div>
       </header>
       <div class="order-2 w-full">
-        <Downloader client:load />
+        <Downloader client:load browserSessionAvailable={browserSessionAvailable} />
       </div>
     </main>
   </body>

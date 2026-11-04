@@ -52,7 +52,7 @@ function formatTime(value) {
   return [hours, minutes, remainder].map((part) => String(part).padStart(2, '0')).join(':');
 }
 
-export default function Downloader() {
+export default function Downloader({ browserSessionAvailable = true }) {
   const [url, setUrl] = useState('');
   const [format, setFormat] = useState('MP4');
   const [browser, setBrowser] = useState('');
@@ -363,25 +363,31 @@ export default function Downloader() {
         <p className="text-xs text-zinc-500">Calidad: hasta la máxima disponible</p>
       </div>
 
-      <div className="space-y-2">
-        <label htmlFor="browser" className="text-xs font-semibold uppercase tracking-widest text-zinc-400">
-          Usar sesión de (opcional)
-        </label>
-        <select
-          id="browser"
-          value={browser}
-          onChange={(e) => setBrowser(e.target.value)}
-          className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-zinc-200"
-        >
-          <option value="">Ninguno (contenido público)</option>
-          {BROWSERS.map((b) => (
-            <option key={b} value={b}>{b}</option>
-          ))}
-        </select>
+      {browserSessionAvailable ? (
+        <div className="space-y-2">
+          <label htmlFor="browser" className="text-xs font-semibold uppercase tracking-widest text-zinc-400">
+            Usar sesión de (opcional)
+          </label>
+          <select
+            id="browser"
+            value={browser}
+            onChange={(e) => setBrowser(e.target.value)}
+            className="w-full rounded-lg border border-white/10 bg-black/40 px-3 py-2 text-sm text-zinc-200"
+          >
+            <option value="">Ninguno (contenido público)</option>
+            {BROWSERS.map((b) => (
+              <option key={b} value={b}>{b}</option>
+            ))}
+          </select>
+          <p className="text-xs text-zinc-500">
+            Para contenido al que ya tienes acceso. El navegador debe estar instalado en el servidor local.
+          </p>
+        </div>
+      ) : (
         <p className="text-xs text-zinc-500">
-          Para contenido privado o con restricción de edad al que tu cuenta ya tiene acceso. Cerrá el navegador antes si da error.
+          Las sesiones de navegador no están disponibles en Vercel; ese servidor no puede acceder a las cookies de tu computadora.
         </p>
-      </div>
+      )}
 
       <button
         disabled={loading}
