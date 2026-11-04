@@ -11,12 +11,15 @@ import tailwindcss from '@tailwindcss/vite';
 const includeFromProject = (file) =>
   path.relative(process.cwd(), file).split(path.sep).join('/');
 
+const ytDlpPath = resolveBinary().path;
+
 export default defineConfig({
   output: 'server',
   integrations: [react()],
   adapter: vercel({
     includeFiles: [
-      includeFromProject(resolveBinary().path),
+      includeFromProject(ytDlpPath),
+      includeFromProject(path.join(path.dirname(ytDlpPath), 'package.json')),
       ...(ffmpegPath ? [includeFromProject(ffmpegPath)] : [])
     ]
   }),
