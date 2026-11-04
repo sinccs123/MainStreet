@@ -1,16 +1,15 @@
 import type { APIRoute } from 'astro';
-import { spawn } from 'node:child_process';
 import { createReadStream } from 'node:fs';
 import { mkdtemp, readdir, rm, stat } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import path from 'node:path';
 import { Readable } from 'node:stream';
 import ffmpegPath from 'ffmpeg-static';
+import { spawnYtDlp } from '@involvex/yt-dlp';
 import { BROWSERS, parseMediaUrl } from '../../lib/media';
 
 export const prerender = false;
 
-const YTDLP = path.resolve(process.cwd(), 'bin', process.platform === 'win32' ? 'yt-dlp.exe' : 'yt-dlp');
 const MIME: Record<string, string> = { mp4: 'video/mp4', mp3: 'audio/mpeg' };
 
 const json = (error: string, status = 400) =>
@@ -28,7 +27,7 @@ function formatSectionTime(seconds: number): string {
 
 function run(args: string[]): Promise<{ code: number; err: string }> {
   return new Promise((resolve) => {
-    const p = spawn(YTDLP, args, { windowsHide: true });
+    const p = spawnYtDlp(args);
     let err = '';
     p.stderr.on('data', (d) => (err = (err + d).slice(-4000)));
     p.on('error', (e) => resolve({ code: -1, err: String(e) }));

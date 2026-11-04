@@ -1,18 +1,15 @@
 import type { APIRoute } from 'astro';
-import { spawn } from 'node:child_process';
-import path from 'node:path';
+import { spawnYtDlp } from '@involvex/yt-dlp';
 import { BROWSERS, parseMediaUrl } from '../../lib/media';
 
 export const prerender = false;
-
-const YTDLP = path.resolve(process.cwd(), 'bin', process.platform === 'win32' ? 'yt-dlp.exe' : 'yt-dlp');
 
 const json = (data: object, status = 200) =>
   new Response(JSON.stringify(data), { status, headers: { 'Content-Type': 'application/json' } });
 
 function getDuration(args: string[]): Promise<{ code: number; out: string; err: string }> {
   return new Promise((resolve) => {
-    const process = spawn(YTDLP, args, { windowsHide: true });
+    const process = spawnYtDlp(args);
     let out = '';
     let err = '';
     process.stdout.on('data', (data) => (out += data));
