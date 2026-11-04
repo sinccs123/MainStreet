@@ -13,6 +13,10 @@ npm run dev
 
 Abre http://localhost:4321. Para compilar y revisar la versión de producción, ejecuta `npm run build` y luego `npm run preview`.
 
+## Abrir sin iniciar un servidor
+
+Abre `index.html` con el navegador. El archivo carga la aplicación publicada en https://mainstreet-gold.vercel.app/ dentro de la página, así que requiere conexión a internet; no es una copia que funcione sin conexión.
+
 ## Compatibilidad y límites
 
 - La descarga se procesa en el servidor con `yt-dlp` y `ffmpeg`.
